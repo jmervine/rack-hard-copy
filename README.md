@@ -1,12 +1,19 @@
-# rack/static-copy
+# rack/static/copy
 
-Why?
+This is a simple two part middleware, the first Rack::Static::Save,
+saves a static html copy (other formats supported) of your rendered
+page. The second, Rack::Static::Load, loads a saved copy instead of
+rendering your page.
 
-This will store a static copy of your processed page so that
-you can load it through a web server. Much faster, no?
+Used together, it should deacrese load time, once a page has been
+saved.
 
-This is was designed around NestaCMS and other simple CMS
-applications and don't require dynamic content.
+Simple Benchmark:
+
+    ... goes here ...
+
+
+So in other words, this is a static html cache.
 
 
 ### Installation
@@ -14,15 +21,47 @@ applications and don't require dynamic content.
     echo "gem 'rack-static-copy'" >> Gemfile
     bundle
 
-### Usage
+### Usage - Basic
 
     # config.ru
-    require 'rack/static-copy'
-    use Rack::StaticCopy, :store  => "/path/to/nginx/root/static",
-                          :ignore => [ "search", "js", "png", "gif" ]
+    require 'rack/static/copy'
+
+    use Rack::Static::Copy, :store   => "/path/to/app/root/static",
+                              :ignore  => [ "search", "js", "png", "gif" ],
+                              :timeout => 600
+
     run App
 
-### Nginx example config:
+
+> Note: This should probably be the last middleware loaded.
+
+### Another Use
+
+Additionally, you can use Rack::Static::Save alone to simple create a copy
+of your pages in rendered html format (other formats are supported).
+
+Exmaple:
+
+    # config.ru
+    require 'rack/static/save'
+
+    use Rack::Static::Save, :store   => "/path/to/nginx/root/static",
+                              :ignore  => [ "search", "js", "png", "gif" ]
+
+    run App
+
+
+From there you can use Nginx to first check and see if the static pages exist
+and if not, load your app normally, which will in turn generate the static
+content.
+
+Very large speed enhancments should be see doing this.
+
+Sample benchmark:
+
+
+
+##### Nginx example config:
 
 # /etc/nginx/sites-enabled/my_site.conf
     server {

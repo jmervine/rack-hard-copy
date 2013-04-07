@@ -5,10 +5,7 @@ module Rack
       include Util
       def initialize(app, opts={})
         @app     = app
-        @store   = opts[:store]   || "./static"
-        @ignores = opts[:ignores] || []
-        @headers = opts[:headers] || false
-        @timeout = opts[:timeout] || false
+        setup_variables(opts)
       end
 
       def call(env)
@@ -36,8 +33,6 @@ module Rack
         end
         return [status, headers, response]
       end
-
-      private
     end
   end
 end

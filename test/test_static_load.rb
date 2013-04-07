@@ -10,7 +10,7 @@ class TestStaticLoad < MiniTest::Unit::TestCase
 
   def setup
     @default_env = { 'PATH_INFO' => '/foo/bar.txt', 'REQUEST_METHOD' => 'GET' }
-    Rack::Static::Save.new(MockApp.new, :store => "/tmp/static_copy_minitest").call(@default_env)
+    Rack::Static::Copy.new(MockApp.new, :store => "/tmp/static_copy_minitest").call(@default_env)
     @middleware = Rack::Static::Load.new(MockApp.new, :store => "/tmp/static_copy_minitest", :headers => true)
   end
 

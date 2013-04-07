@@ -1,42 +1,45 @@
 require File.join(File.dirname(__FILE__), "util")
-require File.join(File.dirname(__FILE__), "save")
-require File.join(File.dirname(__FILE__), "copy")
-
 module Rack
   class Static
     class Copy
       include Util
       def initialize(app, opts={})
-        @app             = app
-
-        # default options
-        opts[:store]   ||= "./static"
-        opts[:ignores] ||= []
-
-        # handing disabling of timeout
-        opts[:timeout] ||= 600 unless opts[:timeout] === false
-
-        opts[:headers] ||= false
-        @options         = opts
+        @app     = app
+        setup_variables(opts)
       end
 
       def call(env)
-        path = generate_path_from(@options[:store], env['PATH_INFO'].to_s)
+        return @app.call(env) unless env["REQUEST_METHOD"] == "GET"
 
-        # handing disabling of timeout
-        if @options[:timeout] === false || expired?(@options[:timeout], path)
-          return Rack::Static::Save.new(@app, @options).call(env)
-        else
-          return Rack::Static::Load.new(@app, @options).call(env)
+        logger    = env['rack.logger']||nil
+        path      = generate_path_from(@store, env['PATH_INFO'].to_s)
+
+        status,
+        headers,
+        response  = @app.call(env)
+        if (@timeout === false || expired?(@timeout, path)) && !ignored?(@ignores, path) && status == 200
+          begin
+            make_dir(::File.dirname(path))
+            create(path, response.first)
+            headers['X-Rack-Static-Copy'] = 'true' if @headers
+            logger.info "Rack::StaticCopy creating: #{path}" rescue nil
+          rescue => e
+            headers['X-Rack-Static-Copy'] = 'error' if @headers
+            logger.error "Rack::StaticCopy error creating: #{path}\n#{e}\n#{e.backtrace.join("\n")}" rescue nil
+          end
         end
+
+        headers['X-Rack-Static-Copy'] ||= 'false' if @headers
+        [status, headers, response]
       end
 
-      def pass_call env, header = "false"
-        status, headers, response = @app.call(env)
-        headers['X-Rack-Static-Copy'] = header
-        [status, headers, response]
+      private
+      def create(f, body)
+        ::File.open(f, ::File::WRONLY|::File::TRUNC|::File::CREAT, 0664) do |file|
+          file.flock(::File::LOCK_EX)
+          file.write(body)
+        end
       end
     end
   end
 end
-

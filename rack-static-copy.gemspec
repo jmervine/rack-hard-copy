@@ -2,11 +2,11 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'rack/static-copy'
+require 'rack/static/copy'
 
 Gem::Specification.new do |s|
   s.name        = "rack-static-copy"
-  s.version     = Rack::StaticCopy::VERSION
+  s.version     = Rack::Static::Copy::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
   s.email       = ["joshua@mervine.net"]
@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.summary     = "Rack Middle to creating static copies of rendered endpoints."
   s.description = s.summary + " This should allow for you to server your content via nginx or the like, without having to rerender."
 
-  #s.add_development_dependency "rspec"
   #s.add_development_dependency "simplecov"
   #s.add_development_dependency "yard"
 
