@@ -17,7 +17,7 @@ module Rack
         logger    = env['rack.logger']||nil
         path      = generate_path_from(@store, env['PATH_INFO'].to_s)
 
-        if ::File.exists?(path) && !ignored?(@ignores, path) && !expired?(@timeout, path)
+        if ::File.exists?(path) && !ignored?(@ignores, path) && (@timeout === false || !expired?(@timeout, path))
           logger.info "Rack::StaticCopy loading: #{path}" rescue nil
           begin
             status = 200

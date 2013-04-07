@@ -21,7 +21,8 @@ module Rack
         http_headers
       end
       def expired? timeout, path
-        return false unless timeout
+        return false if timeout === false
+        return true  if timeout === true
         return true  unless ::File.exists?(path)
         (::File.mtime(path)+timeout) < Time.now
       end
