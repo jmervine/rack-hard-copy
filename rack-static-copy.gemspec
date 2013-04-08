@@ -5,17 +5,14 @@ $:.unshift lib unless $:.include?(lib)
 require 'rack/hard/copy'
 
 Gem::Specification.new do |s|
-  s.name        = "rack-static-copy"
+  s.name        = "rack-hard-copy"
   s.version     = Rack::Hard::Copy::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
   s.email       = ["joshua@mervine.net"]
   s.homepage    = "http://www.rubyops.net/gems/rack-static-copy"
-  s.summary     = "Rack Middle to creating static copies of rendered endpoints."
-  s.description = s.summary + " This should allow for you to server your content via nginx or the like, without having to rerender."
-
-  #s.add_development_dependency "simplecov"
-  #s.add_development_dependency "yard"
+  s.summary     = "Rack Middle to creating static copies of rendered endpoints and reload them."
+  s.description = s.summary + " It equates to a static file cache with other possible uses. See README.md for details."
 
   s.add_dependency "rack", ">=1.5.2"
   s.add_dependency "mime-types", ">=1.22"
