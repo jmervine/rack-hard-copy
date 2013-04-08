@@ -10,7 +10,13 @@ saved.
 
 Simple Benchmark:
 
-    ... goes here ...
+                              1         10        100       1000      10000
+    --------------------------------------------------------------------------
+    test_benchmark_copy_save  0.000881  0.002774  0.024893  0.288374  2.825357
+    test_benchmark_copy_load  0.000497  0.002245  0.016319  0.197906  2.038878
+    test_benchmark_save       0.000709  0.002379  0.020360  0.243811  2.374883
+    test_benchmark_load       0.001283  0.001418  0.011091  0.156337  1.498511
+
 
 
 So in other words, this is a static html cache.
