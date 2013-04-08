@@ -1,8 +1,9 @@
-require File.join(File.dirname(__FILE__), "util")
+require ::File.join(::File.dirname(__FILE__), "util")
 module Rack
   class Static
     class Copy
       include Util
+      autoload :VERSION, ::File.join(::File.dirname(__FILE__), "version")
       def initialize(app, opts={})
         @app     = app
         setup_variables(opts)
@@ -14,9 +15,8 @@ module Rack
         logger    = env['rack.logger']||nil
         path      = generate_path_from(@store, env['PATH_INFO'].to_s)
 
-        status,
-        headers,
-        response  = @app.call(env)
+        status, headers, response  = @app.call(env)
+
         if (@timeout === false || expired?(@timeout, path)) && !ignored?(@ignores, path) && status == 200
           begin
             make_dir(::File.dirname(path))
@@ -30,7 +30,8 @@ module Rack
         end
 
         headers['X-Rack-Static-Copy'] ||= 'false' if @headers
-        [status, headers, response]
+
+        return Rack::Response.new(response, status, headers)
       end
 
       private

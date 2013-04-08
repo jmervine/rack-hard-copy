@@ -10,4 +10,3 @@ Rake::TestTask.new "bench" do |t|
   t.pattern = "test/benchmark.rb"
 end
 
-

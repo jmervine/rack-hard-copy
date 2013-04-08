@@ -41,9 +41,9 @@ class TestStaticLoad < MiniTest::Unit::TestCase
 
   def test_when_not_headers
     @middleware = Rack::Static::Load.new(MockApp.new, :store => "/tmp/static_copy_minitest")
-    assert_expected_response @middleware.call(@default_env), {}
+    assert_expected_response @middleware.call(@default_env), nil
 
-    assert_expected_response @middleware.call(@default_env.merge({ 'PATH_INFO' => '/foo/bah.txt' })), {}
+    assert_expected_response @middleware.call(@default_env.merge({ 'PATH_INFO' => '/foo/bah.txt' })), nil
   end
 
   def test_when_expired
@@ -55,12 +55,4 @@ class TestStaticLoad < MiniTest::Unit::TestCase
     @middleware = Rack::Static::Load.new(MockApp.new, :store => "/tmp/static_copy_minitest", :timeout => 600, :headers => true)
     assert_expected_response @middleware.call(@default_env), { 'X-Rack-Static-Load' => 'true' }
   end
-
-  def assert_expected_response call, header
-    status, headers, response = call
-    assert_equal 200, status
-    assert_equal header, headers
-    assert_equal [ "hello" ], response
-  end
-
 end

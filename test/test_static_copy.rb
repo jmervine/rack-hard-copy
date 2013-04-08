@@ -72,11 +72,9 @@ class TestStaticCopy < MiniTest::Unit::TestCase
     assert_expected_response @middleware.call(env), { 'X-Rack-Static-Copy' => 'true' }
   end
 
-  def assert_expected_response call, header
-    status, headers, response = call
-    assert_equal 200, status
-    assert_equal header, headers
-    assert_equal [ "hello" ], response
+  def test_without_headers
+    @middleware = Rack::Static::Copy.new(MockApp.new, :store => "/tmp/static_copy_minitest")
+    env = { 'PATH_INFO' => '/foo/bar.txt', 'REQUEST_METHOD' => 'GET' }
+    assert_expected_response @middleware.call(env), nil
   end
-
 end

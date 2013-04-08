@@ -31,7 +31,7 @@ module Rack
           status, headers, response = @app.call(env)
           headers['X-Rack-Static-Load'] = "false" if @headers
         end
-        return [status, headers, response]
+        return Rack::Response.new(response, status, headers)
       end
     end
   end
