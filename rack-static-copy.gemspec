@@ -2,11 +2,11 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
-require 'rack/static/copy'
+require 'rack/hard/copy'
 
 Gem::Specification.new do |s|
   s.name        = "rack-static-copy"
-  s.version     = Rack::Static::Copy::VERSION
+  s.version     = Rack::Hard::Copy::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
   s.email       = ["joshua@mervine.net"]

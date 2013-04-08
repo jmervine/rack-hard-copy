@@ -2,7 +2,7 @@ require 'fileutils'
 require 'mime/types'
 
 module Rack
-  class Static
+  class Hard
     module Util
       def setup_variables(opts={})
         @store   ||= opts[:store]   || "./static"

@@ -1,13 +1,4 @@
 $LOAD_PATH << File.dirname(__FILE__)
-if $rake_test
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter "/test"
-    add_filter "/vendor"
-    add_filter "/coverage"
-  end
-end
-
 require 'minitest/unit'
 require 'minitest/autorun'
 require 'minitest/benchmark'
@@ -26,7 +17,7 @@ def assert_expected_response call, header
   status, headers, response = call
   assert_equal 200, status
   if header.nil?
-    assert_equal( [], headers.each_key.select { |key| key =~ /^X-Rack-Static-/ } )
+    assert_equal( [], headers.each_key.select { |key| key =~ /^X-Rack-Hard-/ } )
   else
     assert headers[header.keys.first] = header.values.first
   end

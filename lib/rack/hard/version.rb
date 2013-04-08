@@ -1,5 +1,5 @@
 module Rack
-  class Static::Copy
+  class Hard::Copy
     VERSION = "0.0.2"
   end
 end

@@ -1,7 +1,7 @@
 require ::File.join(::File.dirname(__FILE__), "util")
 module Rack
-  class Static
-    class Copy
+  class Hard
+    class Save
       include Util
       autoload :VERSION, ::File.join(::File.dirname(__FILE__), "version")
       def initialize(app, opts={})
@@ -10,6 +10,7 @@ module Rack
       end
 
       def call(env)
+        return @app.call(env) if     ignored?(@ignores, env["PATH_INFO"].to_s)
         return @app.call(env) unless env["REQUEST_METHOD"] == "GET"
 
         logger    = env['rack.logger']||nil
@@ -21,15 +22,15 @@ module Rack
           begin
             make_dir(::File.dirname(path))
             create(path, response.first)
-            headers['X-Rack-Static-Copy'] = 'true' if @headers
-            logger.info "Rack::StaticCopy creating: #{path}" rescue nil
+            headers['X-Rack-Hard-Save'] = 'true' if @headers
+            logger.info "Rack::Hard::Save creating: #{path}" rescue nil
           rescue => e
-            headers['X-Rack-Static-Copy'] = 'error' if @headers
-            logger.error "Rack::StaticCopy error creating: #{path}\n#{e}\n#{e.backtrace.join("\n")}" rescue nil
+            headers['X-Rack-Hard-Save'] = 'error' if @headers
+            logger.error "Rack::Hard::Save error creating: #{path}\n#{e}\n#{e.backtrace.join("\n")}" rescue nil
           end
         end
 
-        headers['X-Rack-Static-Copy'] ||= 'false' if @headers
+        headers['X-Rack-Hard-Save'] ||= 'false' if @headers
 
         return Rack::Response.new(response, status, headers)
       end

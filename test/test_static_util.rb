@@ -1,26 +1,23 @@
 $LOAD_PATH << File.dirname(__FILE__)
 require 'test_helper'
 
-class TestStaticUtil < MiniTest::Unit::TestCase
+class TestHardUtil < MiniTest::Unit::TestCase
   class MockApp
     def call(env = nil)
       [200, {}, ["hello"]]
     end
   end
 
-  def teardown
-    ::File.delete("/tmp/foo.txt") if ::File.exists?("/tmp/foo.txt")
-  end
-
-  class MockCopy
-    include ::Rack::Static::Util
+  class MockSave
+    include ::Rack::Hard::Util
   end
 
   def setup
-    @mock_copy = MockCopy.new
+    @mock_copy = MockSave.new
   end
 
   def teardown
+    ::File.delete("/tmp/foo.txt") if ::File.exists?("/tmp/foo.txt")
   end
 
   def test_ignores?
