@@ -24,16 +24,24 @@ So in other words, this is a static html cache.
 ### Usage - Basic
 
     # config.ru
-    require 'rack/static/copy'
-
-    use Rack::Static::Copy, :store   => "/path/to/app/root/static",
-                              :ignore  => [ "search", "js", "png", "gif" ],
-                              :timeout => 600
+    require 'rack/hard/copy'
+    use Rack::Hard::Copy, :store   => "/tmp/hard_copy",
+                          :ignores => [ "search", "js", "png", "gif" ],
+                          :timeout => 600
 
     run App
 
 
 > Note: This should probably be the last middleware loaded.
+
+#### Options
+
+* `:store`   - path to file store
+* `:ignores` - `Array` of keywords to be ignored
+* `:timeout` - `Fixnum` as seconds to expire stored files
+* `:headers` - `Boolean` can be set to `true` to insert custom http headers
+  * `X-Rack-Hard-Save => (true|false)`
+  * `X-Rack-Hard-Load => (true|false)`
 
 ### Another Use
 
@@ -43,10 +51,10 @@ of your pages in rendered html format (other formats are supported).
 Exmaple:
 
     # config.ru
-    require 'rack/static/save'
-
-    use Rack::Static::Save, :store   => "/path/to/nginx/root/static",
-                              :ignore  => [ "search", "js", "png", "gif" ]
+    require 'rack/hard/save'
+    use Rack::Hard::Save, :store   => "/path/to/nginx/root/static",
+                          :ignores => [ "search", "js", "png", "gif" ],
+                          :timeout => 600
 
     run App
 
@@ -57,13 +65,10 @@ content.
 
 Very large speed enhancments should be see doing this.
 
-Sample benchmark:
-
-
 
 ##### Nginx example config:
 
-# /etc/nginx/sites-enabled/my_site.conf
+    # /etc/nginx/sites-enabled/my_site.conf
     server {
         #listen   80; ## listen for ipv4; this line is default and implied
         #listen   [::]:80 default ipv6only=on; ## listen for ipv6
@@ -89,5 +94,24 @@ StaticCopy turns `/foo` in to `/foo/index.html`, while simply copying
 anything with an extension. The above `try_files` will look for this
 pattner in your choosen root and store location.
 
+### Load
 
+You can also load static files, on your own. This might be good for
+pregenerating large sitemaps, error pages, etc. Why? Well, it might
+be nice to dynamically generate a page, sitemaps in particular, but
+store them staticly to reduce load on your host when they're rather
+large.
+
+    # config.ru
+    require 'rack/hard/load'
+    use Rack::Hard::Load, :store   => "./hard_copy",
+                          :timeout => false
+
+
+Pregeneration examples:
+
+    $ curl http://yoursite.com/sitemap.xml > ./hard_copy/sitemap.xml
+    $ curl http://yoursite.com/main.css > ./hard_copy/main.css
+
+> These could be automated as part of your startup.
 

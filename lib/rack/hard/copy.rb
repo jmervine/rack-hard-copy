@@ -1,8 +1,11 @@
 require ::File.join(::File.dirname(__FILE__), "util")
+require ::File.join(::File.dirname(__FILE__), "save")
+require ::File.join(::File.dirname(__FILE__), "load")
 module Rack
   class Hard
     class Copy
       include Util
+      autoload :VERSION, ::File.join(::File.dirname(__FILE__), "version")
       def initialize(app, opts={})
         @app             = app
         opts[:store]   ||= "./static"

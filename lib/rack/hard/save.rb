@@ -3,7 +3,6 @@ module Rack
   class Hard
     class Save
       include Util
-      autoload :VERSION, ::File.join(::File.dirname(__FILE__), "version")
       def initialize(app, opts={})
         @app     = app
         setup_variables(opts)
