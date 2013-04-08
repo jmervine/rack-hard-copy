@@ -1,4 +1,4 @@
-# rack/hard/copy
+# Rack::Hard::Copy
 
 This is a simple middleware to save and load static copies of
 rendered pages. So in other words, this is simple static cache
