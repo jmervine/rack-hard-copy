@@ -1,26 +1,9 @@
 # rack/static/copy
 
-This is a simple two part middleware, the first Rack::Static::Save,
-saves a static html copy (other formats supported) of your rendered
-page. The second, Rack::Static::Load, loads a saved copy instead of
-rendering your page.
-
-Used together, it should deacrese load time, once a page has been
-saved.
-
-Simple Benchmark:
-
-                              1         10        100       1000      10000
-    --------------------------------------------------------------------------
-    test_benchmark_copy_save  0.000881  0.002774  0.024893  0.288374  2.825357
-    test_benchmark_copy_load  0.000497  0.002245  0.016319  0.197906  2.038878
-    test_benchmark_save       0.000709  0.002379  0.020360  0.243811  2.374883
-    test_benchmark_load       0.001283  0.001418  0.011091  0.156337  1.498511
-
-
-
-So in other words, this is a static html cache.
-
+This is a simple middleware to save and load static copies of
+rendered pages. So in other words, this is simple static cache
+which saves in a format that can be used as a backup, or to be
+loaded via a simple http server (e.g. Nginx).
 
 ### Installation
 
@@ -51,7 +34,7 @@ So in other words, this is a static html cache.
 
 ### Another Use
 
-Additionally, you can use Rack::Static::Save alone to simple create a copy
+Additionally, you can use Rack::Hard::Save alone to simple create a copy
 of your pages in rendered html format (other formats are supported).
 
 Exmaple:
@@ -96,9 +79,9 @@ Very large speed enhancments should be see doing this.
 
 The key to above lies in `/static$uri/index.html` and `/static$uri`.
 
-StaticCopy turns `/foo` in to `/foo/index.html`, while simply copying
-anything with an extension. The above `try_files` will look for this
-pattner in your choosen root and store location.
+Rack::Hard::Copy turns `/foo` in to `/foo/index.html`, while simply
+copying anything with an extension. The above `try_files` will look
+for this pattner in your choosen root and store location.
 
 ### Load
 
