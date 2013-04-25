@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
   s.email       = ["joshua@mervine.net"]
-  s.homepage    = "http://www.rubyops.net/gems/rack-static-copy"
+  s.homepage    = "http://www.rubyops.net/gems/rack-hard-copy"
   s.summary     = "Rack Middle to creating static copies of rendered endpoints and reload them."
-  s.description = s.summary + " It equates to a static file cache with other possible uses. See README.md for details."
+  s.description = s.summary + " It equates to a static file cache with other possible uses. See rubyops.net/gems/rack-hard-copy for details."
 
-  s.add_dependency "rack", ">=1.5.2"
-  s.add_dependency "mime-types", ">=1.22"
+  s.add_dependency "rack", "~> 1.5.2"
+  s.add_dependency "mime-types", "~> 1.22"
 
   s.files        = Dir.glob("lib/**/*") + %w(README.md Gemfile)
   s.require_path = 'lib'

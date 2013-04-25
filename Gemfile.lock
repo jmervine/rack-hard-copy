@@ -4,11 +4,12 @@ GEM
     coderay (1.0.7)
     method_source (0.8.1)
     mime-types (1.19)
+    minitest (4.7.3)
     pry (0.9.10)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
-    rack (1.4.4)
+    rack (1.5.2)
     rake (10.0.3)
     slop (3.3.3)
 
@@ -17,6 +18,7 @@ PLATFORMS
 
 DEPENDENCIES
   mime-types
+  minitest
   pry
   rack
   rake

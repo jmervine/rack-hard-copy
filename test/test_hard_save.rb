@@ -30,7 +30,7 @@ class TestHardSave < MiniTest::Unit::TestCase
   def test_inserts_correctly_in_file
     env = { 'PATH_INFO' => '/foo/bar', 'REQUEST_METHOD' => 'GET' }
     assert_expected_response @middleware.call(env), { 'X-Rack-Hard-Save' => 'true' }
-    assert_match File.read("/tmp/static_copy_minitest/foo/bar/index.html").strip, /hello/
+    assert_match(File.read("/tmp/static_copy_minitest/foo/bar/index.html").strip, "hello")
   end
 
   def test_other_file_types
